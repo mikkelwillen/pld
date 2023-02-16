@@ -1,0 +1,24 @@
+\section*{Option 3: Type and dictionary inference using logic programming}
+
+\subsection*{A4O3.1}
+The states about types in Haskell can be written in Pure Prolog as follows.
+
+\begin{verbatim}
+isDictOf(eqInt, eq(int)).
+isDictOf(ordInt, ord(int)).
+
+isDictOf(ordBool(X), ord(bool)) :-
+  isDictOf(X,ord(int)).
+
+isDictOf(optimizedOrd, ord(prod(int, int))).
+
+isDictOf(ordPair(X,Y), ord(prod(A,B))) :-
+  isDictOf(X, ord(A)),
+  isDictOf(Y, ord(B)).
+
+isTypeOf(qsortPrime(D,L), list(A)) :-
+  isDictOf(D, ord(A)),
+  isTypeOf(L, list(A)).
+\end{verbatim}
+
+I have chosen to use \texttt{isDictOf(A,B)} to represent the relationship that \texttt{A} is a dictionary of type \texttt{B}, and \texttt{isTypeOf(A,B)} to show that \texttt{A} is of type \texttt{B}.

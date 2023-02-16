@@ -1,0 +1,71 @@
+\section*{A2.4}
+
+\subsection*{a)}
+First we check whether \texttt{upToLength} is linear. Lets write [1,17,11,5] as [3,17]++[11,5].\\
+\texttt{upToLength}([3,17]++[11,5]) returns [1,2,3,4].\\
+Now lets check whether that is the same as \texttt{upToLength}([3,17])++\texttt{upToLength}([11,5]).\\
+\texttt{upToLength}([3,17])++\texttt{upToLength}([11,5]) = [1,2]++[1,2] = [1,2,1,2].\\
+Thus the function is not linear.
+
+
+Now we check whether the function is homomorphic. Lets first find iota $\iota = upToLength([]) = []$.\begin{align*}
+upToLength([3,17]++[11,5]) &= upToLength([3,17]) \oplus upToLength([11,5])\\
+&= [1,2] \oplus [1,2]
+\end{align*}
+Thus $xs \oplus ys$ must be $xs ++ map(lambda y: length(xs) + y, ys)$.
+
+\subsection*{b)}
+First we check whether \texttt{everyOther} is linear. Lets write ['e','v','e','r','y'] as ['e','v','e']++['r','y'].\\
+\texttt{everyOther}(['e','v','e']++['r','y']) returns ['e','e','y'].\\
+Now lets check whether that is the same as \texttt{everyOther}(['e','v','e'])++\texttt{everyOther}(['r','y']).\\
+\texttt{everyOther}(['e','v','e'])++\texttt{everyOther}(['r','y']) = ['e','e']++['r'] = ['e','e','r'].\\
+Thus the function is not linear.
+
+Now we check whether the function is homomorphic. Lets first find iota $\iota = everyOther([]) = []$.\begin{align*}
+everyOther(['e','v','e']++['r','y']) &= everyOther(['e','v','e'])\oplus everyOther(['r','y'])\\
+&= ['e','e']\oplus ['r']
+\end{align*}
+There is no $\oplus$ that will give us the right answer, thus this function is not homomorphic.
+
+\subsection*{c)}
+Again we check whether \texttt{returnEmpty} is linear.\\
+\texttt{returnEmpty}([1,2]++[3,4]) = []\\
+\texttt{returnEmpty}([1,2])++ \texttt{returnEmpty}([3,4]) = []\\
+Thus the function is linear.
+
+When a function is linear, it is also homomorphic. Here is why:
+\begin{align*}
+returnEmpty([]) &=[]\\
+returnEmpty([1,2]++[3,4]) &= returnEmpty([1,2]) \oplus returnEmpty([3,4])\\
+&= [] \oplus []
+\end{align*}
+Thus if $\oplus$ is $++$ the function is homomorphic.
+
+\subsection*{d)}
+We check if the function is linear. \texttt{appendAll}([[1],[4,2]]++[[],[1]]) = [1,4,2,1].\\
+\texttt{appendAll}([[1],[4,2]])++\texttt{appendAll}([[],[1]]) = [1,4,2,1]. Thus the function is linear.
+
+Again, if a function is linear, it is also homomorphic. \texttt{appendAll}([])=[]=$\iota$.\\
+\begin{align*}
+appendAll([[1],[4,2]]++[[],[1]]) &= appendAll([[1],[4,2]]) \oplus appendAll([[],[1]])\\
+&= [1,4,2] \oplus [1]
+\end{align*}
+Thus the function is homomorphic with $\iota$=[] and $\oplus$ is $++$.
+
+\subsection*{e)}
+Again we check whether the function is linear. \texttt{sorted}([1,3,3,7]) returns [1,7].\\
+\texttt{sorted}([1,3])++\texttt{sorted}([3,7]) returns [1,3,3,7]. Thus the function is not linear.
+
+\begin{align*}
+sorted([]) &= []\\
+sorted([1,3]++[3,7]) &= sorted([1,3]) \oplus sorted([3,7])\\
+&= [1,3] \oplus [3,7]\\
+sorted([1,3]++[2,7]) &= sorted([1,3]) \oplus sorted([2,7])\\
+&= [1,3] \oplus [2,7]
+\end{align*}
+
+Thus the function is homomorphic with
+$$\oplus = \left\{ \begin{array}{ll}
+l1[0] ++ l2[1] & if \; l1[1] \leq l2[0] \\
+l1[0] & otherwise
+\end{array}\right.$$

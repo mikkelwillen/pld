@@ -1,0 +1,78 @@
+\section*{The Common Part}
+
+\subsection*{A4C.1}
+The statement for adding local variables
+$$\texttt{local } \textbf{var } \texttt{in } \textit{Stat}$$
+creates a new variable in the statement, and the variable is instantiated to $0$. To get the inverse of this, we need to assure that the inverse operations are performed, to ensure that tho local variable returns to the value $0$. That is, the inverse of the statement is
+$$\texttt{local } \textbf{var } \texttt{in } \textit{Stat'}$$
+where \textit{Stat'} is the inverse of \textit{Stat}.
+
+\subsection*{A4C.2}
+A gcd procedure does not output garbage in every iteration is shown below.
+
+\begin{verbatim}
+read m;
+read n;
+
+gcd()
+  local g in
+    if (n == 0)
+      g += m;
+      write g
+    else
+      g += m mod n
+      m <-> n
+      g <-> n
+      gcd()
+      g <-> n
+      m <-> n
+      g -= m mod n
+    fi (n == 0)
+
+gcd()
+
+write m;
+write n
+\end{verbatim}
+
+This procedure first reads m and n, then calls the function \texttt{gcd()}. This function creates a local variable \texttt{g} and then performs the same check as the repeat-loop in the procedure from figure 13.6 in "Programming Language Design and Implementation". If \texttt{n} is equal to zero, this means the greatest common divisor is the value of \texttt{m}, and therefore \texttt{g}, which is currently $0$, has \texttt{m} added to its value and is written. If \texttt{n} is not equal to zero, we perform the same operations as in the repeat-loop, then call \texttt{gcd()} recursively, and then performs the inverse operations to go back to the original values of the variables.
+
+\subsection*{A4C.3}
+The gcd program written in Python looks as follows.
+
+\begin{verbatim}
+m = int(input())
+n = int(input())
+
+def swap(x,y):
+  a = x
+  x = y
+  y = a
+  return x,y
+
+def gcd():
+  global m
+  global n
+  g = 0
+  if (n == 0):
+    g += m
+    print(g)
+    g = 0
+    assert(n==0)
+  else:
+    g += m % n
+    m,n = swap(m,n)
+    g,n = swap(g,n)
+    gcd()
+    g,n = swap(g,n)
+    m,n = swap(m,n)
+    assert(n!=0)
+  
+gcd()  
+
+print(m)
+m = 0
+print(n)
+n = 0
+\end{verbatim}
+

@@ -1,0 +1,30 @@
+\subsection*{A4O3.4}
+
+\subsubsection*{\textbf{(a)}}
+The following code snippet shows how \textbf{cuts} can be added to the facts and implications for O3.1 to ensure that only one dictionary of each type is found.
+
+\begin{verbatim}
+isDictOf(eqInt, eq(int)) :- !.
+isDictOf(ordInt, ord(int)) :- !.
+
+isDictOf(ordBool(X), ord(bool)) :-
+  isDictOf(X,ord(int)),
+  !.
+
+isDictOf(optimizedOrd, ord(prod(int, int))) :- !.
+
+isDictOf(ordPair(X,Y), ord(prod(A,B))) :-
+  isDictOf(X, ord(A)),
+  isDictOf(Y, ord(B)),
+  !.
+\end{verbatim}
+
+By adding these cuts, the query \texttt{isDictOf(X,ord(prod(int,int)))} will output only \texttt{optimizedOrd} instead of both \texttt{optimizedOrd} and \texttt{ordPair(ordInt,ordInt)}.
+
+Here I use the method of adding a cut in the end of each fact and predicate, as this will ensure that if there has been found one dictionary of a type, the query will end. This is not nessecarily a very neat way to ensure this, and it results in always choosing the dictionary of a certain type which is declared first in the program. Therefore, the author should maybe put some thought into the order in which the program is written. For example, is it desirable to get the most specific dictionary, or the most general? That is something that should be consideres when ordering the facts and implications.
+
+The con of this way of choosing a specific dictionary is, that the program will choose for you, and if you are not aware that your code is ambiguous, you will never know and thus never really get to choose for yourself.
+
+
+\subsubsection*{\textbf{(b)}}
+If we want to check wether there are several dictionaries of the same type, eg. \texttt{A}, we can in Prolog perform the query \texttt{isDictOf(X, A)}, and it will output all instances and conditional instances of that type - unles of course you have added cuts. Using this idea, it would be possible to check every type of dictionary manually, to determine whether multiple dictionaries of that type existed. However this would have to be done manually, or at least all types of dictionaries would have to be put in a list, so that we can loop through the list and check every type.

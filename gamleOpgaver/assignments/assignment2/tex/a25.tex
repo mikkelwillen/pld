@@ -1,0 +1,75 @@
+\section*{A2.5}
+
+\subsection*{a)}
+\begin{verbatim}
+Unify(s=a(A,B),t=a(B,A))
+	Rule 6: c=a s1=A t1=B
+              s2=B t2=A
+  Unify(s=A, t=B)
+    Rule 4: Bind A -> B
+    Succeed
+  Unify(s=B, t=A)
+    Rule 3: u=B
+    Unify(s=B, u=B)
+      Rule 1: Succeed
+
+Bindings:
+A -> B
+
+Resulting type: a(B,B)
+\end{verbatim}
+
+\subsection*{b)}
+\begin{verbatim}
+Unify(s=a(A,b(c)), t=a(B,A))
+	Rule 6: c=a s1=A    t1=B
+              s2=b(c) t2=A
+  Unify(s=A, t=B)
+    Rule 4: Bind A -> B
+    Succeed
+  Unify(s=b(c), t=A)
+    Rule 3: u=B
+    Unify(s=b(c), u=B)
+      Rule 5: Bind B -> b(c) 
+      Succeed
+
+Bindings:
+A -> B
+B -> b(c)
+
+Resulting type: a(b(c), b(c))
+\end{verbatim}
+
+\subsection*{c)}
+\begin{verbatim}
+Unify(s=a(A,b(B)), t=a(B,A))
+	Rule 6: c=a s1=A    t1=B
+              s2=b(B) t2=A
+  Unify(s=A, t=B)
+    Rule 4: Bind A -> B
+    Succeed
+  Unify(s=b(B), t=A)
+    Rule 3: u=B
+    Unify(s=b(c), u=B)
+      Rule 7: s contains u
+      Fail 
+\end{verbatim}
+
+\subsection*{d)}
+\begin{verbatim}
+Unify(s=a(b(c),b(B)), t=a(B,A))
+	Rule 6: c=a s1=b(c) t1=B
+              s2=b(B) t2=A
+  Unify(s=b(c), t=B)
+    Rule 5: Bind B -> b(c)
+    Succeed
+  Unify(s=b(B), t=A)
+    Rule 5: Bind A -> b(B)
+
+Bindings:
+B -> b(c)
+A -> b(c)
+
+Resulting type: a(b(c), b(b(c)))
+\end{verbatim}
+

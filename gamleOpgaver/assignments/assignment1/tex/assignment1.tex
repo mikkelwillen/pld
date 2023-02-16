@@ -1,0 +1,106 @@
+\documentclass[a4paper,11pt]{article}
+
+\setlength{\parindent}{0pt}
+
+% Various packages
+\usepackage{graphicx}
+\usepackage{a4wide}
+\usepackage{url}
+\usepackage[left=2cm,top=2cm,bottom=1.5cm,right=2cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{wrapfig}
+\usepackage{fixme}
+\usepackage{color}
+\usepackage{pstricks}
+\usepackage{pdfpages}
+\usepackage[utf8]{inputenc}
+\usepackage{enumitem}
+\usepackage{tasks}
+\usepackage{float}
+\usepackage{dutchcal}
+
+%\usepackage{minted}
+
+\usepackage{listings}
+\usepackage{lstautogobble}
+\usepackage{semantic}
+
+% Various custom commands
+\newcommand{\argmin}{hrm{argmin}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\mean}{\mathbb{E}}
+\newcommand{\V}{\mathbb{V}}
+\newcommand{\prob}{\mathbb{P}}
+\newcommand{\var}{\mathrm{var}}
+\newcommand{\iid}{\overset{\text{iid}}{\sim}}
+
+\newcommand{\w}{{\mathbf w}}
+\newcommand{\x}{{\mathbf x}}
+\newcommand{\y}{{\mathbf y}}
+\newcommand{\X}{{\mathbf X}}
+\renewcommand{\P}[1]{\mathbb P\lrc{#1}}
+\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+
+\newcommand{\lr}[1]{\left (#1\right)}
+\newcommand{\lrc}[1]{{\left \{#1\right\}}}
+\newcommand{\lra}[1]{\left |#1\right|}
+\newcommand{\lrs}[1]{\left [#1\right]}
+
+
+\lstset{basicstyle=\ttfamily,
+  mathescape=true,
+  escapeinside=||,
+  autogobble}
+
+\makeatletter
+\newcommand*\bigcdot{\mathpalette\bigcdot@{.5}}
+\newcommand*\bigcdot@[2]{\mathbin{\vcenter{\hbox{\scalebox{#2}{$\m@th#1\bullet$}}}}}
+\makeatother
+\usepackage{geometry}
+\geometry{
+  top=1.3in,    
+  inner=1.4in,
+  outer=1.4in,
+  bottom=1.3in,
+  headheight=3ex,  
+  headsep=3ex,     
+}
+\usepackage{fancyhdr}
+\pagestyle{fancyplain}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{Matilde Broløs}
+\fancyhead[RE,LO]{PLD - Assignment 1}
+\fancyfoot[CE,CO]{}
+\fancyfoot[LE,RO]{\thepage}
+\renewcommand{\plainheadrulewidth}{0.4pt}
+
+%\usepackage{tikz}
+
+
+% Making itemized lists that save space
+\newenvironment{packed_itemize}{
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{itemize}}
+
+
+\title{PLD Assignment 1}
+\author{Matilde Broløs (jtw868)}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\input{a11.tex}
+\input{a12.tex}
+\input{a13.tex}
+
+\end{document}

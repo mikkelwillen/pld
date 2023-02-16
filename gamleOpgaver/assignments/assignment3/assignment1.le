@@ -1,0 +1,37 @@
+\ Assignment 1
+(load listfunctions)
+
+\ A function 'reverse' that reverses a list
+(define reverse (lambda ((a . d)) (append (reverse d) (list a)) (a) a)) 
+
+\ Helper function: append two lists (even if both lists are ())
+(define append2
+   (lambda (() bs) bs
+           (bs ()) bs
+           (() ()) ()
+           ((a . as) bs) (cons a (append2 as bs))
+           (bs (a . as)) (append (list bs a) as)
+           (as bs) (list as bs)))
+
+\ Helper function: Find all elements smaller than p
+(define allSmallerThan (lambda ((a . d) p) (append2 (< a p) (allSmallerThan d p)) 
+                               (() p) ()
+                               (a p) (< a p)))
+
+\ Helper function: Find all elements greater than or equal to p
+(define allGreaterThan (lambda ((a . d) p) (append2 (>= a p) (allGreaterThan d p)) 
+                               (() p) ()
+                               (a p) (> a p)))
+
+\ A function 'sort' that sorts a list
+(define sort (lambda ((a . d)) (append (append (sort (allSmallerThan d a)) (list a)) (sort (allGreaterThan d a)))
+                     (()) ()
+                     a a))
+
+\ A function 'reverse' that reverses a list using delta
+(define reversedelta (delta ((a . d)) (append (reverse d) (list a)) (a) a)) 
+
+\ A function 'sort' that sorts a list using delta
+(define sortdelta (delta ((a . d)) (append (append (sortdelta (allSmallerThan d a)) (list a)) (sortdelta (allGreaterThan d a)))
+                     (()) ()
+                     a a))

@@ -1,0 +1,54 @@
+\section*{A2.2}
+
+\subsection*{a)}
+An advantage is that there will be only one value for truth. If any non-zero values are considered true, then comparing two truth values can evaluate to false, as the values are technically not equal, even though they are both true. 
+
+Another advantage could be that it would avoid false positives, because only $1$ would be considered as \textit{true}. When there are fewer values that are considered as \textit{true}, it is easier to predict and understand how to do calculations with truth values.
+
+Disadvantages are that more checks would have to be implemented, to be certain that the input value is either $0$ or $1$. Furthermore, not all values would be accepted in an \textit{if} or \textit{while} statement, which means that we would need a way to deal with run-time errors, as opposed to the other version, where we can always evaluate values to either \textit{true} or \textit{false}.
+
+\subsection*{b)}
+Advantages could be that an and-operation between the truth value \texttt{0xfff...ff} and an arbitrary value $x$ will always return the value $x$, and likewise an or-operation between $0$ and a value $x$ will always return $x$.
+
+Furthermore, the negation of the truth value \texttt{0xfff...ff} is equal to $0$, and vice versa. This can be convenient when performing calculations.
+
+A disadvantage is that multiple values evaluate to \textit{true}.
+
+\subsection*{c)}
+A suggestion to what values would be sensible for representing \textit{true} and \textit{false} could be $0$ for \textit{false} and all non-zero values for \textit{true}. The implementation of logical conjunction and disjunction could look as follows.
+
+\begin{verbatim}
+(define and (lambda (0 0) (0)
+                    (0 x) (0)
+                    (x 0) (0)
+                    (x x) (1)
+            )
+)
+
+(define or (lambda (0 0) (0)
+                   (0 x) (1)
+                   (x 0) (1)
+                   (x x) (1)
+           )
+)
+\end{verbatim}
+
+Another suggestion could be \texttt{FALSE} for \textit{false} and \texttt{TRUE} for \textit{true}. The implementation of logical conjunction and disjunction could then look as follows.
+
+\begin{verbatim}
+(define and (lambda (FALSE FALSE) (FALSE)
+                    (FALSE TRUE) (FALSE)
+                    (TRUE FALSE) (FALSE)
+                    (TRUE TRUE) (TRUE)
+            )
+)
+
+(define and (lambda (FALSE FALSE) (FALSE)
+                    (FALSE TRUE) (TRUE)
+                    (TRUE FALSE) (TRUE)
+                    (TRUE TRUE) (TRUE)
+            )
+)
+\end{verbatim}
+
+These operations could be done variadic too, as it could be done as a recursive version of the binary solution. A proper return value when no arguments are given could then be \textit{true}, as the recursion would then be easier to implement. Furthermore, it might make sense that \texttt{x and ()} returns \textit{true} if $x$ is true, thus $()$ should evaluate to \textit{true}.

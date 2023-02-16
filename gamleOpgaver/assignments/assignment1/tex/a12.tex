@@ -1,0 +1,41 @@
+\section*{A 1.2}
+
+\subsection*{a)}
+Below the programs and the machine is represented as diagrams (H is short for Haskell).
+\begin{center}
+  \begin{picture}(230,100)(-90,-20)
+    \put(-30,0){\compiler{C,ARM,ARM}}
+    \put(-130,0){\compiler{H,H,C}}
+    \put(80,0){\interpreter{H,C}}
+    \put(180,0){\machine{ARM}}
+  \end{picture}
+\end{center}
+
+\subsection*{b)}
+First we want to convert the interpreter of Haskell in C to an interpreter of Haskell in ARM:
+\begin{center}
+  \begin{picture}(230,100)(-90,-20)
+    \put(0,0){\compiler{\interpreter{H,C},\machine{ARM},\interpreter{H,ARM}}}
+  \end{picture}
+\end{center}
+So now we have the interpreter in ARM, and so we want to interpret the compiler from Haskell to C written in Haskell so we get a compiler from Haskell to C written in ARM.
+\begin{center}
+  \begin{picture}(230,150)(-20,-90)
+    \put(0,0){\compiler{H,\compiler{H,\interpreter{H,\machine{ARM}},\compiler{H,\compiler{C,\machine{ARM},\compiler{H,ARM,C}},C}},C}}
+%    \put(0,0){\compiler{\compiler{H,H,C},\interpreter{H,\machine{ARM}},\compiler{\compiler{H,C,C},\machine{ARM},\compiler{H,ARM,C}}}}
+  \end{picture}
+\end{center}
+After running this, we have a compiler from Haskell to C written in ARM:
+\begin{center}
+  \begin{picture}(230,100)(-90,-20)
+    \put(0,0){\compiler{H,ARM,C}}
+  \end{picture}
+\end{center}
+
+\subsection*{c)}
+Now we want to convert a program \textit{p} written in Haskell to a program written in ARM, using our new compiler. This can be done on our ARM machine as shown below.
+\begin{center}
+  \begin{picture}(230,100)(-20, -20)
+    \program{p,\compiler{H,\machine{ARM},\program{p,\compiler{C,\machine{ARM},\program{p,ARM}}}}}
+  \end{picture}
+\end{center}

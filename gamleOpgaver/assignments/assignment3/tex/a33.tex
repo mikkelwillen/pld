@@ -1,0 +1,95 @@
+\section*{A3.3}
+
+\subsection*{a)}
+The probability that the third-largest of 39 nine-sided dice will be 8 can be calculated with the following command in Troll.
+
+\begin{verbatim}
+least 1 largest 3 39d9
+\end{verbatim}
+
+The result can be seen in figure \ref{fig:troll}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{a33a.png}
+\caption{Result of running the above code.}
+\label{fig:troll}
+\end{figure}
+
+Thus, the probability is $0.172550700$.
+
+\subsection*{b)}
+To compute the probability of $8$ being the third highest roll when rolling $39$ $9$-sided dice, lets first look at the first three rolls. There are a number of different combinations of numbers in the first three rolls. Lets represent any $8$'s by $e$ and $9$'s by $n$, and all other values by $x$. Now the first thing the program should do is calculate the probabilities of the different throws. I chose to write this program in python, and this first calculation is shown below.
+
+\begin{verbatim}
+# Number of rolls and sides on dice
+die_rolls = 39
+die_sides = 9
+
+# Probability that result is lower than 8
+lo_prob = (7 / die_sides)
+# Probability that result a specific roll, here either 8 or 9
+hi_prob = (1 / die_sides)
+
+# Cases for the first 3 dice. 'e' is for 8, 'n' is for 9, and 'x' is for 1-7.
+# The probability of the case is multiplied by the number of permutations.
+
+# All cases where neither 8 nor 9 is included
+xxx = ((7**3) / (9**3))
+# Cases xx8 x8x 8xx
+exx = (lo_prob**2 * hi_prob) * 3
+# Cases xx9 x9x 9xx
+nxx = (lo_prob**2 * hi_prob) * 3
+# Cases 88x 8x8 x88
+eex = (lo_prob * hi_prob**2) * 3
+# Cases 99x 9x9 x99
+nnx = (lo_prob * hi_prob**2) * 3
+# Cases 98x 89x 8x9 9x8 x89 x98
+nex = (lo_prob * hi_prob**2) * 6
+# Cases 998 989 899
+nne = (hi_prob**3) * 3
+# Cases 889 898 988
+nee = (hi_prob**3) * 3
+# Case 888
+eee = hi_prob**3
+\end{verbatim}
+
+Now we have the probability for each of these combinations, and we need to add the remaining $36$ rolls. For each roll we update the probability for each of the above cases, thus for example the probability that \texttt{xxx} remains the hghest three dice is equal to the current possibility times \texttt{lo\_prob}, as we need to count the cases where the new die is neither $8$ nor $9$.
+
+The code for this is presented below.
+
+\begin{verbatim}
+for i in range(die_rolls - 3):
+    tmp_xxx = xxx * lo_prob
+    tmp_exx = (exx * lo_prob) + (xxx * hi_prob)
+    tmp_nxx = (nxx * lo_prob) + (xxx * hi_prob)
+    tmp_eex = (eex * lo_prob) + (exx * hi_prob)
+    tmp_nnx = (nnx * lo_prob) + (nxx * hi_prob)
+    tmp_nex = (nex * lo_prob) + (nxx * hi_prob) + (exx * hi_prob)
+    tmp_eee = (eee * lo_prob) + (eex * hi_prob) + (eee * hi_prob)
+    tmp_nne = (nne * lo_prob) + (nne * hi_prob) + (nee * hi_prob)
+                              + (nex * hi_prob) + (nnx * hi_prob)
+    tmp_nee = (nee * lo_prob) + (nee * hi_prob) + (eee * hi_prob)
+                              + (nex * hi_prob) + (eex * hi_prob)
+    xxx = tmp_xxx
+    exx = tmp_exx
+    nxx = tmp_nxx
+    eex = tmp_eex
+    nnx = tmp_nnx
+    nex = tmp_nex
+    eee = tmp_eee
+    nne = tmp_nne
+    nee = tmp_nee
+
+
+# Print the result with 9 decimals
+print("The probability is %.9f" % (eee + nee + nne))
+\end{verbatim}
+
+When running this code, we get that the probability is $0.172550700$ which is precisely equal to the result we got from the Troll code.
+
+
+\subsection*{c)}
+The size of the Python program is remarkably bigger than the Troll program, and it was much more difficult to write. The length of the program also decreases understandability, as it is not immediately clear what the code does. When understanding the syntax of Troll, the program was easy to write, and easy for the reader to understand as well. 
+Furthermore, the Troll program can easily be modified to calculate a different number of rolls, or different number of largest rolls. The python progam, on the other hand, can relatively easily be change to compute a different number of rolls, but to change it to a different number of largest rolls would not be easy.
+Concerning runtime, it seems that both programs compute the result very fast, at least when dealing with such a small calculation as this.

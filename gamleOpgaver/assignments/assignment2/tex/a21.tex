@@ -1,0 +1,34 @@
+\section*{A2.1}
+\subsection*{a)}
+Below the ned version of \texttt{applyFun} can be seen.
+\begin{verbatim}
+and applyFun (fnc, pars) localEnv =
+      match fnc with
+      | Symbol x when (List.contains x unops) ->
+          match pars with
+          | Cons (v, Nil) -> applyUnop x v
+          | _ -> raise (Lerror ("Wrong number of arguments to " + x))
+      | Symbol x when (List.contains x binops) ->
+          match pars with
+          | Cons (v1, Cons (v2, Nil)) ->
+                applyBinop x (v1, v2) localEnv
+          | _ -> raise (Lerror ("Wrong number of arguments to " + x))
+      | Symbol x when (List.contains x varops) ->
+          applyVarop x pars
+        // applying a closure
+      | Closure (Cons (Symbol "lambda", rules), closureEnv) ->
+          tryRules rules pars closureEnv
+      | Cons (Symbol "delta", rules) ->
+          tryRules rules pars localEnv
+      | _ -> raise (Lerror (showSexp fnc + " can not be applied as a function"))
+\end{verbatim}
+
+\subsection*{b)}
+The dynamically scoped functions use deep binding, as it uses a stack of bindings between variable names and values. New variable pairs are pushed onto the stack, and are also popped when leaving the scope in which the variables existed.
+
+\subsection*{c)}
+There will be no observable difference between shallow and deep binding, as we pass variables by value, not by reference, which means that no closure is built, and thus it is always the most recent value for the variable that we use.
+
+We see that this is the case by looking at the \texttt{combine} function in the \texttt{RunLISP.fsx} file. Here we see that to combine two environments env1 and env2, we first check whether env1 is empty, or if it contains a binding from $x$ to $v$ appended to a third environment. If the second is the case, we check if $x$ is present in env2: if yes, and the value of $x$ in env2 is equal to $v$, we append env3 to env2. If the value is not equal to $v$, then we can't combine the environments, and nothing happens. If $x$ is not present in env2, we add $(x,v)$ to env, and combine env3 and env2.
+
+\subsection*{d)}

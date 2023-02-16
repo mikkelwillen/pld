@@ -1,0 +1,29 @@
+\section*{A3.2}
+
+\subsection*{a)}
+First lets expand the type system with the rule for the \texttt{let}-expression. First we must check three things:
+\begin{enumerate}
+	\item When vealuating $e_1$ with an environment $\tau_1$ it evaluates to a type $t_1$
+	\item The pattern $p$ matches a type $t_1$ and produces an environment $\tau_2$
+	\item When evaluating $e_2$ with an environment $\tau_1 \circ \tau_2$ it evaluates to a type $t_2$
+\end{enumerate}
+Now if these conditions are true, we can form the \texttt{let}-expression. Thus the final type rule is:
+$$\frac{\tau_1 \vdash e_1 : t_1 \; \; \; t_1 \vdash p \hookrightarrow \tau_2 \; \; \; \tau_1 \circ \tau_2 \vdash e_2 : t_2}{\tau \vdash \texttt{let} \; p:t_1 = e_1:t_1 \; \texttt{in} \; e_2:t_2}$$
+
+Now we define the type rules for patterns. If the pattern matches the type \texttt{int} then we produce an empty environment.
+$$\frac{}{\texttt{int}\vdash n \hookrightarrow []}$$
+If the pattern matches a variable of type $t$ then we map the variable to the type.
+$$\frac{}{t\vdash x \hookrightarrow [x \mapsto t]}$$
+For the last rule, if $p_1$ is compatible with $t_!$, and $p_2$ is compatible with $t_2$, then the resulting type environment is the two environments combined.
+$$\frac{t_1 \vdash p_1 \hookrightarrow \tau_1 \;\;\; t_2 \vdash p_2 \hookrightarrow \tau_2}{(t_1*t_2) \vdash (p_1,p_2) \hookrightarrow \tau_1 \circ \tau_2}$$
+
+\subsection*{b)}
+Again we start by writing the semantic rule for the \texttt{let}-expression. The structure follows the same logic as in the previous task.
+$$\frac{\rho_1 \vdash e_1 \leadsto v_1 \;\;\; v_1 \vdash p \rightharpoonup \rho_2 \;\;\; \rho_1 \circ \rho_2 \vdash e_2 \leadsto v_2}{\rho \vdash \texttt{let} \;\; p \leadsto v_1 = e_1 \leadsto v_1 \; \texttt{in} \; e_2 \leadsto v_2}$$
+
+Now we define the semantic rules for patterns. If $v=n$, where $n$ is a number, then when $v$ matches $n$ we produce the empty value environment.
+$$\frac{v=n}{v\vdash n \rightharpoonup []}$$
+When the pattern is a variable $x$ matching a value $v$, the produced environment maps the variable to the value $v$.
+$$\frac{}{v \vdash x \rightharpoonup [x \mapsto v]}$$
+Last last rule follows the logic of the type system rule very closely. If the pattern $p_1$ matches a value $v_1$ and produces an environment $\rho_1$, and the pattern $p_2$ matches a value $v_2$ and produces an environment $\rho_2$, then the environment of the pair of the two patterns will be the two environments combined.
+$$\frac{v_1 \vdash p_1 \rightharpoonup \rho_1 \;\;\; v_2 \vdash p_2 \rightharpoonup \rho_2}{(v_1*v_2)\vdash (p_1,p_2) \rightharpoonup \rho_1 \circ \rho_2}$$
