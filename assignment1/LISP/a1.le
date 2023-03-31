@@ -4,17 +4,17 @@
 
 (define helperLeft
     (lambda ((a . b)) (if (<= (helperLeft a) (helperRight b)) (helperRight b))
+            ()        ()
             (a)       a
             (a . ())  ()
-            (() . a)  ()
-            ()        ()))
+            (() . a)  ()))
 
 (define helperRight
     (lambda ((a . b)) (if (<= (helperLeft a) (helperRight b)) (helperLeft a))
+            ()        ()
             (a)       a
             (a . ())  ()
-            (() . a)  ()
-            ()        ()))
+            (() . a)  ()))
 
 (define getLeft
     (lambda ((a . b)) (getLeft a)
@@ -22,13 +22,14 @@
 
 (define minOrder?
     (lambda ((a . b)) (if (<= (helperLeft a) (helperRight b)) (getLeft a))
+            ()        ()
             (a)       a
             (a . ())  ()
-            (() . a)  ()
-            ()        ()))
+            (() . a)  ()))
 
 (define test1
     (lambda x      (append x x)))
 
 (define test2
     (lambda (x ())        (append x '(3))))
+    
